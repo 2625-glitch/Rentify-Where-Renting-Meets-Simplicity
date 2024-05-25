@@ -30,7 +30,12 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: '*',
+  })
+);
 app.options('*', cors());
 
 // jwt authentication
