@@ -1,12 +1,16 @@
-import { useState } from "react";
-
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../../contexts/AuthContext';
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const validate = () => {
     let tempErrors = {};
@@ -14,16 +18,16 @@ const Login = () => {
 
     // Validate Email
     if (!formData.email) {
-      tempErrors.email = "Email is required.";
+      tempErrors.email = 'Email is required.';
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Email is not valid.";
+      tempErrors.email = 'Email is not valid.';
       isValid = false;
     }
 
     // Validate Password
     if (!formData.password) {
-      tempErrors.password = "Password is required.";
+      tempErrors.password = 'Password is required.';
       isValid = false;
     }
 
@@ -39,16 +43,39 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form data submitted:", formData);
-      // Handle successful login (e.g., redirect to another page or show a success message)
-      setFormData({
-        email: "",
-        password: "",
-      });
-      setErrors({});
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/v1/users/login',
+          {
+            email: formData.email,
+            password: formData.password,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          const { token } = response.data;
+          console.log('Login successful, token:', token);
+          // Optionally save the token to localStorage
+          localStorage.setItem('token', token);
+          // Update AuthContext state
+          login();
+          // Navigate to the home page
+          navigate('/');
+        } else {
+          alert('Login failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during login');
+      }
     }
   };
 
@@ -73,7 +100,7 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
+                errors.email ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="you@example.com"
               required
@@ -96,7 +123,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.password ? "border-red-500" : "border-gray-300"
+                errors.password ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="••••••••"
               required
@@ -115,7 +142,7 @@ const Login = () => {
           </div>
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Dont have an account?{"   "}
+              Dont have an account?{'   '}
               <a
                 href="/signup"
                 className="text-indigo-600 hover:text-indigo-500 font-medium"

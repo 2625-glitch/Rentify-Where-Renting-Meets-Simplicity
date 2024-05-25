@@ -1,14 +1,16 @@
-import { useState } from "react";
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validate = () => {
     let tempErrors = {};
@@ -16,37 +18,37 @@ const Signup = () => {
 
     // Validate First Name
     if (!formData.firstName) {
-      tempErrors.firstName = "First Name is required.";
+      tempErrors.firstName = 'First Name is required.';
       isValid = false;
     } else if (/\d/.test(formData.firstName)) {
-      tempErrors.firstName = "First Name should not contain numbers.";
+      tempErrors.firstName = 'First Name should not contain numbers.';
       isValid = false;
     }
 
     // Validate Last Name
     if (!formData.lastName) {
-      tempErrors.lastName = "Last Name is required.";
+      tempErrors.lastName = 'Last Name is required.';
       isValid = false;
     } else if (/\d/.test(formData.lastName)) {
-      tempErrors.lastName = "Last Name should not contain numbers.";
+      tempErrors.lastName = 'Last Name should not contain numbers.';
       isValid = false;
     }
 
     // Validate Email
     if (!formData.email) {
-      tempErrors.email = "Email is required.";
+      tempErrors.email = 'Email is required.';
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = "Email is not valid.";
+      tempErrors.email = 'Email is not valid.';
       isValid = false;
     }
 
     // Validate Password
     if (!formData.password) {
-      tempErrors.password = "Password is required.";
+      tempErrors.password = 'Password is required.';
       isValid = false;
     } else if (formData.password.length < 8) {
-      tempErrors.password = "Password should be at least 8 characters long.";
+      tempErrors.password = 'Password should be at least 8 characters long.';
       isValid = false;
     }
 
@@ -62,18 +64,39 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form data submitted:", formData);
-      // Clear form
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-      });
-      setErrors({});
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/v1/users',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          console.log('Form data submitted:', formData);
+          alert('User signed up successfully');
+          // Clear form
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+          });
+          setErrors({});
+          navigate('/login');
+        } else {
+          alert('Failed to sign up user');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while signing up');
+      }
     }
   };
 
@@ -98,7 +121,7 @@ const Signup = () => {
               value={formData.firstName}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.firstName ? "border-red-500" : "border-gray-300"
+                errors.firstName ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="John"
               required
@@ -121,7 +144,7 @@ const Signup = () => {
               value={formData.lastName}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.lastName ? "border-red-500" : "border-gray-300"
+                errors.lastName ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="Doe"
               required
@@ -144,7 +167,7 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
+                errors.email ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="john.doe@example.com"
               required
@@ -167,7 +190,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.password ? "border-red-500" : "border-gray-300"
+                errors.password ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="••••••••"
               required
