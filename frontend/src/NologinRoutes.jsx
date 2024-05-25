@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LandingPage from "./components/NotLoginFlow/LandingPage";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LandingPage from './components/NotLoginFlow/LandingPage';
 
-import Signup from "./components/NotLoginFlow/Signup";
-import Login from "./components/NotLoginFlow/Login";
+import Signup from './components/NotLoginFlow/Signup';
+import Login from './components/NotLoginFlow/Login';
 
 export const NoLoggedIn = () => {
   return (

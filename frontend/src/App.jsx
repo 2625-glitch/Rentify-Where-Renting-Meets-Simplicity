@@ -1,9 +1,10 @@
-import "./index.css";
-import { NoLoggedIn } from "./NologinRoutes";
+import './index.css';
+import { NoLoggedIn } from './NologinRoutes';
+import { LoginRoute } from './LoginRoute';
 function App() {
-  const isLoggedin = false;
+  const isLoggedin = true;
 
-  return <>{isLoggedin ? null : <NoLoggedIn />}</>;
+  return <>{isLoggedin ? <LoginRoute /> : <NoLoggedIn />}</>;
 }
 
 export default App;
