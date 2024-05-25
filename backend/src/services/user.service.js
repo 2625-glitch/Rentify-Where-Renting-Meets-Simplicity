@@ -21,25 +21,28 @@ const logInUser = async (userData) => {
   const user = await User.findOne({ email: userData.email });
 
   if (user) {
-    const password = user.isPasswordMatch(userData.password);
-    if (password) {
-      const token = await user.generateAuthToken();
-      console.log('user logi info is correct and token is', token);
+    const isPasswordMatch = await user.isPasswordMatch(userData.password); // Await password check if it's an async function
+    if (isPasswordMatch) {
+      const token = await user.generateAuthToken(); // Ensure this function is correctly implemented
+      console.log('User login info is correct and token with user is', token, user);
       return {
         message: 'User logged in',
-        status: httpStatus.SUCCESSFUL,
-        data: token,
+        status: httpStatus.OK, // Use OK status for successful login
+        data: {
+          token,
+          user,
+        },
       };
     }
     return {
-      message: 'Incorrect Password',
+      message: 'Incorrect password',
       status: httpStatus.UNAUTHORIZED,
       data: {},
     };
   }
   return {
-    message: 'User doesnt exist',
-    status: httpStatus.BAD_REQUEST,
+    message: 'User does not exist',
+    status: httpStatus.NOT_FOUND, // Use NOT_FOUND status for non-existing user
     data: {},
   };
 };

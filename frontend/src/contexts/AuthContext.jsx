@@ -1,23 +1,26 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 
-// Create AuthContext
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-// Create AuthProvider component
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
+  const [token, setToken] = useState(null);
 
-  const login = () => {
+  const login = (token) => {
     setIsLoggedin(true);
+    setToken(token);
   };
 
   const logout = () => {
     setIsLoggedin(false);
+    setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedin, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedin, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

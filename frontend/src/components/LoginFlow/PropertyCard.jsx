@@ -11,9 +11,7 @@ const PropertyCard = ({ property }) => {
       </div>
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{property.location}</div>
-        <p className="text-gray-700 text-base">
-          Seller: {property.seller.name}
-        </p>
+        <p className="text-gray-700 text-base">Seller: {property.userId} </p>
         <p className="text-gray-700 text-base">Area: {property.area} sq ft</p>
         <p className="text-gray-700 text-base">Bedrooms: {property.bedrooms}</p>
         <p className="text-gray-700 text-base">

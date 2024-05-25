@@ -1,7 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { useUser } from '../../contexts/UserContext';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -10,7 +12,8 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth(); // Correct usage of useAuth
+  const { setUser } = useUser(); // Correct usage of useUser
 
   const validate = () => {
     let tempErrors = {};
@@ -59,15 +62,18 @@ const Login = () => {
             },
           }
         );
+        console.log('Response:', response);
 
         if (response.status === 200) {
-          const { token } = response.data;
+          const { token, user } = response.data.data;
           console.log('Login successful, token:', token);
+          console.log('user data is', user);
           // Optionally save the token to localStorage
           localStorage.setItem('token', token);
           // Update AuthContext state
-          login();
-          // Navigate to the home page
+          login(token);
+          // Update UserContext state
+          setUser(user);
           navigate('/');
         } else {
           alert('Login failed');

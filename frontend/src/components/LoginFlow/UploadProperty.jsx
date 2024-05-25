@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useUser } from '../../contexts/UserContext';
 
 export const UploadProperty = () => {
   const [formData, setFormData] = useState({
-    seller: '',
     location: '',
     area: '',
     bedrooms: '',
@@ -11,6 +11,7 @@ export const UploadProperty = () => {
     amenities: '',
   });
   const [errors, setErrors] = useState({});
+  const { user } = useUser(); // Assuming useAuth provides the logged-in user details
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +23,6 @@ export const UploadProperty = () => {
 
   const validate = () => {
     let formErrors = {};
-    if (!formData.seller) formErrors.seller = 'Seller is required';
     if (!formData.location) formErrors.location = 'Location is required';
     if (!formData.area || isNaN(formData.area))
       formErrors.area = 'Valid area is required';
@@ -40,24 +40,33 @@ export const UploadProperty = () => {
       setErrors(formErrors);
       return;
     }
-    // Clear errors
     setErrors({});
 
-    // Add your API endpoint here
-    const API_ENDPOINT = 'https://your-backend-api/properties';
+    if (!user || !user.id) {
+      console.error('User is not logged in or user id is missing');
+      alert('User is not logged in or user id is missing');
+      return;
+    }
 
+    const API_ENDPOINT = 'http://localhost:3000/v1/property';
+    console.log('user id while uploading property is', user.id);
     try {
-      const response = await axios.post(API_ENDPOINT, formData, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        API_ENDPOINT,
+        {
+          ...formData,
+          userId: user.id,
         },
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (response.status === 200 || response.status === 201) {
         alert('Property uploaded successfully');
-        // Clear the form
         setFormData({
-          seller: '',
           location: '',
           area: '',
           bedrooms: '',
@@ -69,6 +78,7 @@ export const UploadProperty = () => {
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('An error occurred during property upload');
     }
   };
 
@@ -76,26 +86,6 @@ export const UploadProperty = () => {
     <div className="max-w-md mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6">Upload Property</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label
-            htmlFor="seller"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Seller
-          </label>
-          <input
-            type="text"
-            id="seller"
-            name="seller"
-            value={formData.seller}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-          {errors.seller && (
-            <p className="text-red-500 text-xs mt-1">{errors.seller}</p>
-          )}
-        </div>
-
         <div className="mb-4">
           <label
             htmlFor="location"
