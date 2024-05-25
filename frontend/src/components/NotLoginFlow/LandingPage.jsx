@@ -1,4 +1,4 @@
-import Navbar from "./Navbar/NotLogedInNav";
+import Navbar from "../Navbar/NotLogedInNav";
 
 const LandingPage = () => {
   return (
