@@ -1,8 +1,10 @@
 import "./App.css";
-import SignupForm from "./components/Signup";
+
 import "./index.css";
+import { NoLoggedIn } from "./NologinRoutes";
 function App() {
-  return <SignupForm />;
+  const isLoggedin = false;
+  return <>{isLoggedin ? null : <NoLoggedIn />}</>;
 }
 
 export default App;
