@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
-const User = require('./models/user.model');
 
 let server;
 
@@ -41,7 +40,6 @@ const exitHandler = () => {
 
 const unexpectedErrorHandler = (error) => {
   logger.error(error);
-  exitHandler();
 };
 
 process.on('uncaughtException', unexpectedErrorHandler);

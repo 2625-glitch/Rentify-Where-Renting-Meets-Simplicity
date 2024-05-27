@@ -1,10 +1,9 @@
 // controllers/property.controller.js
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const propertyService = require('../services/property.service');
-const mongoose = require('mongoose');
 
 const createProperty = async (req, res) => {
-  console.log('came to controller', req.body);
   const property = await propertyService.createProperty(req.body);
   res.status(httpStatus.CREATED).send(property);
 };
@@ -23,7 +22,6 @@ const getPropertyById = async (req, res) => {
 };
 
 const getPropertiesByUserId = async (req, res) => {
-  console.log('get prop by user id in controller', req.params.id);
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(httpStatus.BAD_REQUEST).send({ message: 'Invalid user ID' });
@@ -56,7 +54,6 @@ const deleteProperty = async (req, res) => {
     }
     res.status(httpStatus.OK).send({ message: 'Property deleted successfully' });
   } catch (error) {
-    console.error('Error deleting property:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Internal Server Error' });
   }
 };

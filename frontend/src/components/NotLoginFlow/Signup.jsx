@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    password: '',
-    userType: 'buyer', // default to buyer
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    userType: "buyer", // default to buyer
   });
 
   const [errors, setErrors] = useState({});
@@ -20,37 +20,37 @@ const Signup = () => {
 
     // Validate First Name
     if (!formData.firstname) {
-      tempErrors.firstname = 'First Name is required.';
+      tempErrors.firstname = "First Name is required.";
       isValid = false;
     } else if (/\d/.test(formData.firstname)) {
-      tempErrors.firstname = 'First Name should not contain numbers.';
+      tempErrors.firstname = "First Name should not contain numbers.";
       isValid = false;
     }
 
     // Validate Last Name
     if (!formData.lastname) {
-      tempErrors.lastname = 'Last Name is required.';
+      tempErrors.lastname = "Last Name is required.";
       isValid = false;
     } else if (/\d/.test(formData.lastname)) {
-      tempErrors.lastname = 'Last Name should not contain numbers.';
+      tempErrors.lastname = "Last Name should not contain numbers.";
       isValid = false;
     }
 
     // Validate Email
     if (!formData.email) {
-      tempErrors.email = 'Email is required.';
+      tempErrors.email = "Email is required.";
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = 'Email is not valid.';
+      tempErrors.email = "Email is not valid.";
       isValid = false;
     }
 
     // Validate Password
     if (!formData.password) {
-      tempErrors.password = 'Password is required.';
+      tempErrors.password = "Password is required.";
       isValid = false;
     } else if (formData.password.length < 8) {
-      tempErrors.password = 'Password should be at least 8 characters long.';
+      tempErrors.password = "Password should be at least 8 characters long.";
       isValid = false;
     }
 
@@ -70,32 +70,32 @@ const Signup = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        console.log('user data in the frontend', formData);
+        console.log("user data in the frontend", formData);
         const response = await axios.post(`${backendUrl}/v1/users`, formData, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
         if (response.status === 200 || response.status === 201) {
-          console.log('Form data submitted:', formData);
-          alert('User signed up successfully');
+          console.log("Form data submitted:", formData);
+          alert("User signed up successfully");
           // Clear form
           setFormData({
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: '',
-            userType: 'buyer',
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            userType: "buyer",
           });
           setErrors({});
-          navigate('/login');
+          navigate("/login");
         } else {
-          alert('Failed to sign up user');
+          alert("Failed to sign up user");
         }
       } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while signing up');
+        console.error("Error:", error);
+        alert("An error occurred while signing up");
       }
     }
   };
@@ -121,7 +121,7 @@ const Signup = () => {
               value={formData.firstname}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.firstname ? 'border-red-500' : 'border-gray-300'
+                errors.firstname ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="John"
               required
@@ -144,7 +144,7 @@ const Signup = () => {
               value={formData.lastname}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.lastname ? 'border-red-500' : 'border-gray-300'
+                errors.lastname ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="Doe"
               required
@@ -167,7 +167,7 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
+                errors.email ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="john.doe@example.com"
               required
@@ -210,7 +210,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
+                errors.password ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="••••••••"
               required

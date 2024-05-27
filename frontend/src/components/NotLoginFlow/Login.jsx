@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth } from '../../contexts/AuthContext';
-import { useUser } from '../../contexts/UserContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
+import { useUser } from "../../contexts/UserContext";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -20,15 +20,15 @@ const Login = () => {
     let isValid = true;
 
     if (!formData.email) {
-      tempErrors.email = 'Email is required.';
+      tempErrors.email = "Email is required.";
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      tempErrors.email = 'Email is not valid.';
+      tempErrors.email = "Email is not valid.";
       isValid = false;
     }
 
     if (!formData.password) {
-      tempErrors.password = 'Password is required.';
+      tempErrors.password = "Password is required.";
       isValid = false;
     }
 
@@ -56,31 +56,32 @@ const Login = () => {
           },
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
-        console.log('Response:', response);
 
         if (response.status === 200) {
           const { token, user } = response.data.data;
-          localStorage.setItem('token', token);
+
+          localStorage.setItem("token", token);
+
           login(token);
           setUser(user);
-          navigate('/');
+          navigate("/");
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
         if (error.response) {
           if (error.response.status === 401) {
-            setErrors({ password: 'Incorrect password' });
+            setErrors({ password: "Incorrect password" });
           } else if (error.response.status === 404) {
-            setErrors({ email: 'User does not exist' });
+            setErrors({ email: "User does not exist" });
           } else {
-            alert('An error occurred during login try again');
+            alert("An error occurred during login try again");
           }
         } else {
-          alert('An error occurred during login');
+          alert("An error occurred during login");
         }
       }
     }
@@ -107,7 +108,7 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
+                errors.email ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="you@example.com"
               required
@@ -130,7 +131,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
+                errors.password ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="••••••••"
               required
@@ -149,7 +150,7 @@ const Login = () => {
           </div>
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Dont have an account?{'   '}
+              Dont have an account?{"   "}
               <a
                 href="/signup"
                 className="text-indigo-600 hover:text-indigo-500 font-medium"

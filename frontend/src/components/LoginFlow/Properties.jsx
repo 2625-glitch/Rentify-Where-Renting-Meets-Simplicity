@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import SellerPropertyCard from './SellerPropertyCard';
-import { useAuth } from '../../contexts/AuthContext';
-import { useUser } from '../../contexts/UserContext';
-import SearchIcon from '@mui/icons-material/Search';
-import UploadProperty from './UploadProperty';
-import Modal from './Modal';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import SellerPropertyCard from "./SellerPropertyCard";
+import { useUser } from "../../contexts/UserContext";
+import SearchIcon from "@mui/icons-material/Search";
+import UploadProperty from "./UploadProperty";
+import Modal from "./Modal";
 const Properties = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [properties, setProperties] = useState([]);
   const { user } = useUser();
-  const { token } = useAuth();
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState({
-    area: '',
-    amenities: '',
-    bathrooms: '',
-    location: '',
+    area: "",
+    amenities: "",
+    bathrooms: "",
+    location: "",
   });
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
@@ -49,7 +47,7 @@ const Properties = () => {
     }
     if (searchCriteria.amenities) {
       const amenitiesArray = searchCriteria.amenities
-        .split(',')
+        .split(",")
         .map((a) => a.trim().toLowerCase());
       filtered = filtered.filter((property) =>
         amenitiesArray.every((amenity) =>
@@ -61,10 +59,10 @@ const Properties = () => {
   };
   const handleClearFilters = () => {
     setSearchCriteria({
-      area: '',
-      amenities: '',
-      bathrooms: '',
-      location: '',
+      area: "",
+      amenities: "",
+      bathrooms: "",
+      location: "",
     });
     setFilteredProperties(properties);
   };
@@ -79,27 +77,21 @@ const Properties = () => {
   const fetchProperties = async () => {
     try {
       if (user && user.id) {
-        console.log('user id from frontend', user.id);
         const response = await axios.get(
-          `${backendUrl}/v1/property/user/${user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          `${backendUrl}/v1/property/user/${user.id}`
         );
-        console.log('got propertues of user is', response.data);
+
         setProperties(response.data);
         setFilteredProperties(response.data);
       }
     } catch (error) {
-      console.error('Error fetching properties:', error);
+      console.error("Error fetching properties:", error);
     }
   };
 
   useEffect(() => {
     fetchProperties();
-  }, [user, token]);
+  }, []);
 
   useEffect(() => {
     filterProperties();
@@ -108,7 +100,7 @@ const Properties = () => {
   return (
     <div>
       <div className="flex flex-wrap justify-center mb-4 py-4">
-        <SearchIcon style={{ paddingtop: '4px', marginTop: '2' }} />
+        <SearchIcon style={{ paddingtop: "4px", marginTop: "2" }} />
         <input
           type="text"
           name="location"

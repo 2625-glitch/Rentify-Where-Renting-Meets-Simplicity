@@ -1,23 +1,19 @@
 const jwt = require('jsonwebtoken');
 const httpStatus = require('http-status');
-const { jwtsecretkey } = require('../config/config');
+const { jwtsecret } = require('../config/config');
+const { User } = require('../models');
 
 const checkLoggedIn = async (req, res) => {
-  const token = req.cookies.Authtokenrentify;
+  const { token } = req.body;
 
   try {
-    if (!token) {
-      res.send({
-        message: 'User not loggedin',
-        status: httpStatus.SUCCESSFUL,
-        data: false,
-      });
-    } else {
-      jwt.verify(token, jwtsecretkey);
+    if (jwt.verify(token, jwtsecret)) {
+      const user = jwt.verify(token, jwtsecret);
+      const result = await User.findById(user._id);
       res.send({
         message: 'User loggedin',
         status: httpStatus.SUCCESSFUL,
-        data: true,
+        data: result,
       });
     }
   } catch (error) {

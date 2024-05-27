@@ -1,9 +1,7 @@
 // services/property.service.js
 const Property = require('../models/property.model');
-const mongoose = require('mongoose');
 
 const createProperty = async (propertyData) => {
-  console.log('came to cservice', propertyData);
   const property = await Property.create(propertyData);
   return property;
 };

@@ -5,8 +5,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
 const passport = require('passport');
+const cookie = require('cookie-parser');
 const httpStatus = require('http-status');
-
 const routes = require('./routes/v1');
 
 const ApiError = require('./utils/ApiError');
@@ -15,6 +15,7 @@ const app = express();
 
 // set security HTTP headers
 app.use(helmet());
+app.use(cookie());
 
 // parse json request body
 app.use(express.json());
@@ -28,15 +29,14 @@ app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
-app.get("/", (req, res) => {
-    res.json("Hello");
-})
 
 // enable cors
 app.use(
   cors({
+    origin: '*',
     credentials: true,
-    origin: 'https://rentify-where-renting-meets-simplicity-nllf.vercel.app/',
+    optionSuccessStatus: 200,
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   })
 );
 app.options('*', cors());

@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const httpStatus = require('http-status');
 const { userService } = require('../services');
-const mongoose = require('mongoose');
 
 const createUser = async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -14,6 +14,7 @@ const logInUser = async (req, res) => {
       res.cookie('Authtokenrentify', result.data.token, {
         httpOnly: true,
       });
+      res.send(result);
     }
     res.status(result.status).send(result);
   } catch (err) {
@@ -46,7 +47,6 @@ const fetchUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.error('Error fetching user:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       message: 'Internal server error',
       status: httpStatus.INTERNAL_SERVER_ERROR,

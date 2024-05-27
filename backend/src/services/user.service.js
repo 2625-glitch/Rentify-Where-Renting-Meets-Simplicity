@@ -11,7 +11,7 @@ const createUser = async (userData) => {
     };
   }
   User.create(userData);
-  console.log('user data added is', userData);
+
   return {
     message: 'User created',
     status: httpStatus.SUCCESSFUL,
@@ -25,7 +25,7 @@ const logInUser = async (userData) => {
     const isPasswordMatch = await user.isPasswordMatch(userData.password);
     if (isPasswordMatch) {
       const token = await user.generateAuthToken();
-      console.log('User login info is correct and token with user is', token, user);
+
       return {
         message: 'User logged in',
         status: httpStatus.OK,
