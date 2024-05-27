@@ -28,6 +28,9 @@ app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
+app.get("/", (req, res) => {
+    res.json("Hello");
+})
 
 // enable cors
 app.use(
