@@ -54,7 +54,7 @@ const deleteProperty = async (req, res) => {
     if (!property) {
       return res.status(httpStatus.NOT_FOUND).send({ message: 'Property not found' });
     }
-    res.status('Deleted Property').send();
+    res.status(httpStatus.OK).send({ message: 'Property deleted successfully' });
   } catch (error) {
     console.error('Error deleting property:', error);
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Internal Server Error' });

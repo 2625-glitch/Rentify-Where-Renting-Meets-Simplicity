@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 
 const createUser = async (userData) => {
+  console.log('user data recvieved during signup in service is', userData);
   if (await User.isEmailTaken(userData.email)) {
     return {
       message: 'User already exist',

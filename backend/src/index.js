@@ -5,6 +5,7 @@ const logger = require('./config/logger');
 const User = require('./models/user.model');
 
 let server;
+
 mongoose
   .connect(config.mongoose.url, config.mongoose.options)
   .then(async () => {
@@ -26,6 +27,17 @@ mongoose
     logger.error('Error connecting to MongoDB:', err);
     process.exit(1);
   });
+
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
 const unexpectedErrorHandler = (error) => {
   logger.error(error);

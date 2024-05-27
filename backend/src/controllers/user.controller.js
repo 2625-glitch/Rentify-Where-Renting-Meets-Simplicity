@@ -8,16 +8,16 @@ const createUser = async (req, res) => {
 };
 
 const logInUser = async (req, res) => {
-  const result = await userService.logInUser(req.body);
   try {
-    if (result.status === httpStatus.SUCCESSFUL) {
-      res.cookie('Authtokenrentify', result.data, {
+    const result = await userService.logInUser(req.body);
+    if (result.status === httpStatus.OK) {
+      res.cookie('Authtokenrentify', result.data.token, {
         httpOnly: true,
       });
     }
-    res.send(result);
+    res.status(result.status).send(result);
   } catch (err) {
-    res.send({
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       message: 'Internal server error',
       status: httpStatus.INTERNAL_SERVER_ERROR,
     });
