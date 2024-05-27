@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema(
   {
     firstname: {
       type: String,
-      require,
+      required: true,
     },
     lastname: {
       type: String,
@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema(
       minlength: 8,
       private: true,
     },
+    userType: { type: String, enum: ['buyer', 'seller'], default: 'buyer' },
     tokens: [
       {
         token: {

@@ -3,9 +3,10 @@
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Alert from '@mui/material/Alert';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EditProperty from './EditProperty';
 import Modal from './Modal';
+import axios from 'axios';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 import {
   Tooltip,
@@ -24,6 +25,7 @@ export const SellerPropertyCard = ({
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const handleDelete = () => {
     fetch(`${backendUrl}/v1/property/${property._id}`, {
       method: 'DELETE',
@@ -41,6 +43,21 @@ export const SellerPropertyCard = ({
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `${backendUrl}/v1/users/${property.userId}`
+        );
+        setUser(response.data.data);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    fetchUser();
+  }, [property.userId]);
+
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
       {deleteSuccess && (
@@ -69,7 +86,11 @@ export const SellerPropertyCard = ({
               </Tooltip>
             </div>
           </div>
-          <p className="text-gray-700 text-base">Seller: {property.userId} </p>
+          {user && (
+            <p className="text-gray-700 text-base">
+              Seller: {user.data.firstname} {user.data.lastname}
+            </p>
+          )}
           <p className="text-gray-700 text-base">Area: {property.area} sq ft</p>
           <p className="text-gray-700 text-base">
             Bedrooms: {property.bedrooms}

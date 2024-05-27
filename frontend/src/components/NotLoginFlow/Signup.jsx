@@ -7,6 +7,7 @@ const Signup = () => {
     lastName: '',
     email: '',
     password: '',
+    userType: 'buyer', // default to buyer
   });
 
   const [errors, setErrors] = useState({});
@@ -68,6 +69,7 @@ const Signup = () => {
     e.preventDefault();
     if (validate()) {
       try {
+        console.log('user data in the frontend', formData);
         const response = await axios.post(
           'http://localhost:3000/v1/users',
           formData,
@@ -87,6 +89,7 @@ const Signup = () => {
             lastName: '',
             email: '',
             password: '',
+            userType: 'buyer',
           });
           setErrors({});
           navigate('/login');
@@ -176,6 +179,26 @@ const Signup = () => {
               <p className="mt-2 text-sm text-red-600">{errors.email}</p>
             )}
           </div>
+          <div>
+            <label
+              htmlFor="userType"
+              className="block text-sm font-medium text-gray-700"
+            >
+              User Type
+            </label>
+            <select
+              id="userType"
+              name="userType"
+              value={formData.userType}
+              onChange={handleChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            >
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+            </select>
+          </div>
+
           <div>
             <label
               htmlFor="password"

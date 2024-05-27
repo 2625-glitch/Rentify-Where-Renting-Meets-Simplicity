@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useUser } from '../../contexts/UserContext';
 
 const LoggedInNav = () => {
+  const { user } = useUser();
+
   return (
     <nav className="bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,18 +22,22 @@ const LoggedInNav = () => {
                 >
                   Home
                 </Link>
-                <Link
-                  to="/properties"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Properties
-                </Link>
-                <Link
-                  to="/uploadProperties"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Upload Properties
-                </Link>
+                {user.userType === 'seller' && (
+                  <>
+                    <Link
+                      to="/properties"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Properties
+                    </Link>
+                    <Link
+                      to="/uploadProperties"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Upload Properties
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

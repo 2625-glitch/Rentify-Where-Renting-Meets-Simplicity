@@ -16,7 +16,6 @@ const getPropertyById = async (propertyId) => {
   return Property.findById(propertyId);
 };
 const getPropertiesByUserId = async (userId) => {
-  console.log('user id in service', userId);
   return Property.find({ userId });
 };
 
