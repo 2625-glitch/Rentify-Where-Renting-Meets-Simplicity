@@ -12,14 +12,13 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login } = useAuth(); // Correct usage of useAuth
-  const { setUser } = useUser(); // Correct usage of useUser
+  const { login } = useAuth();
+  const { setUser } = useUser();
 
   const validate = () => {
     let tempErrors = {};
     let isValid = true;
 
-    // Validate Email
     if (!formData.email) {
       tempErrors.email = 'Email is required.';
       isValid = false;
@@ -28,7 +27,6 @@ const Login = () => {
       isValid = false;
     }
 
-    // Validate Password
     if (!formData.password) {
       tempErrors.password = 'Password is required.';
       isValid = false;
@@ -66,21 +64,24 @@ const Login = () => {
 
         if (response.status === 200) {
           const { token, user } = response.data.data;
-          console.log('Login successful, token:', token);
-          console.log('user data is', user);
-          // Optionally save the token to localStorage
           localStorage.setItem('token', token);
-          // Update AuthContext state
           login(token);
-          // Update UserContext state
           setUser(user);
           navigate('/');
-        } else {
-          alert('Login failed');
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred during login');
+        if (error.response) {
+          if (error.response.status === 401) {
+            setErrors({ password: 'Incorrect password' });
+          } else if (error.response.status === 404) {
+            setErrors({ email: 'User does not exist' });
+          } else {
+            alert('An error occurred during login try again');
+          }
+        } else {
+          alert('An error occurred during login');
+        }
       }
     }
   };

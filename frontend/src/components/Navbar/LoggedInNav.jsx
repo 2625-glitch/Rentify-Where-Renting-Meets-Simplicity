@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useUser } from '../../contexts/UserContext';
-
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 const LoggedInNav = () => {
   const { user } = useUser();
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <nav className="bg-gray-800">
@@ -40,6 +48,14 @@ const LoggedInNav = () => {
                 )}
               </div>
             </div>
+          </div>
+          <div className="hidden md:block">
+            <button
+              onClick={handleLogout}
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>

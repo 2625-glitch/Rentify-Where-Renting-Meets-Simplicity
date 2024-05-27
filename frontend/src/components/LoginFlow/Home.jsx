@@ -15,11 +15,13 @@ const Home = () => {
   });
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
+
     setSearchCriteria({
       ...searchCriteria,
       [name]: value,
     });
   };
+
   const filterProperties = () => {
     let filtered = properties;
     if (searchCriteria.location) {
@@ -100,6 +102,9 @@ const Home = () => {
           placeholder="Search by Area"
           className="p-2 border border-gray-300 rounded mr-2"
         />
+        {!/^\d+$/.test(searchCriteria.area) && searchCriteria.area !== '' && (
+          <p className="text-red-500">Enter a valid integer.</p>
+        )}
         <input
           type="number"
           name="bathrooms"
@@ -108,14 +113,21 @@ const Home = () => {
           placeholder="Search by Bathrooms"
           className="p-2 border border-gray-300 rounded mr-2"
         />
-        <input
-          type="text"
+        {!/^\d+$/.test(searchCriteria.bathrooms) &&
+          searchCriteria.bathrooms !== '' && (
+            <p className="text-red-500">Enter a valid integer .</p>
+          )}
+
+        <textarea
           name="amenities"
           value={searchCriteria.amenities}
           onChange={handleSearchChange}
           placeholder="Search by Amenities (comma-separated)"
           className="p-2 border border-gray-300 rounded mr-2"
+          rows={1}
+          cols={20}
         />
+
         <button
           onClick={handleClearFilters}
           className="p-2 bg-gray-500 text-white rounded mr-2"
