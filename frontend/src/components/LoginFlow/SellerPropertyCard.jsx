@@ -31,8 +31,12 @@ export const SellerPropertyCard = ({
       method: 'DELETE',
     })
       .then((response) => {
-        setDeleteSuccess(true);
-        onPropertyDeleted();
+        if (response.ok) {
+          setDeleteSuccess(true);
+          onPropertyDeleted();
+        } else {
+          throw new Error('Failed to delete property');
+        }
       })
       .catch((error) => {
         console.error('Error deleting property:', error);

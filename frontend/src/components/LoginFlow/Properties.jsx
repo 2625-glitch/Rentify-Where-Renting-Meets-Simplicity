@@ -133,13 +133,14 @@ const Properties = () => {
           placeholder="Search by Bathrooms"
           className="p-2 border border-gray-300 rounded mr-2"
         />
-        <input
-          type="text"
+        <textarea
           name="amenities"
           value={searchCriteria.amenities}
           onChange={handleSearchChange}
           placeholder="Search by Amenities (comma-separated)"
           className="p-2 border border-gray-300 rounded mr-2"
+          rows={1}
+          cols={20}
         />
         <button
           onClick={handleClearFilters}

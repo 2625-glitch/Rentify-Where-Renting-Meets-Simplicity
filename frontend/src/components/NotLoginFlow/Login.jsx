@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUser } from '../../contexts/UserContext';
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -49,7 +49,7 @@ const Login = () => {
     if (validate()) {
       try {
         const response = await axios.post(
-          'http://localhost:3000/v1/users/login',
+          `${backendUrl}/v1/users/login`,
           {
             email: formData.email,
             password: formData.password,

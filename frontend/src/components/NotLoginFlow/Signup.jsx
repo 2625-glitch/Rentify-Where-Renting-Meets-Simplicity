@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Signup = () => {
   const [formData, setFormData] = useState({
     firstname: '',
@@ -70,15 +71,11 @@ const Signup = () => {
     if (validate()) {
       try {
         console.log('user data in the frontend', formData);
-        const response = await axios.post(
-          'http://localhost:3000/v1/users',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
+        const response = await axios.post(`${backendUrl}/v1/users`, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
         if (response.status === 200 || response.status === 201) {
           console.log('Form data submitted:', formData);
