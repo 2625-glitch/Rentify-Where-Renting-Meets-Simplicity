@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     userType: 'buyer', // default to buyer
@@ -18,20 +18,20 @@ const Signup = () => {
     let isValid = true;
 
     // Validate First Name
-    if (!formData.firstName) {
-      tempErrors.firstName = 'First Name is required.';
+    if (!formData.firstname) {
+      tempErrors.firstname = 'First Name is required.';
       isValid = false;
-    } else if (/\d/.test(formData.firstName)) {
-      tempErrors.firstName = 'First Name should not contain numbers.';
+    } else if (/\d/.test(formData.firstname)) {
+      tempErrors.firstname = 'First Name should not contain numbers.';
       isValid = false;
     }
 
     // Validate Last Name
-    if (!formData.lastName) {
-      tempErrors.lastName = 'Last Name is required.';
+    if (!formData.lastname) {
+      tempErrors.lastname = 'Last Name is required.';
       isValid = false;
-    } else if (/\d/.test(formData.lastName)) {
-      tempErrors.lastName = 'Last Name should not contain numbers.';
+    } else if (/\d/.test(formData.lastname)) {
+      tempErrors.lastname = 'Last Name should not contain numbers.';
       isValid = false;
     }
 
@@ -85,8 +85,8 @@ const Signup = () => {
           alert('User signed up successfully');
           // Clear form
           setFormData({
-            firstName: '',
-            lastName: '',
+            firstname: '',
+            lastname: '',
             email: '',
             password: '',
             userType: 'buyer',
@@ -112,48 +112,48 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
-              htmlFor="firstName"
+              htmlFor="firstname"
               className="block text-sm font-medium text-gray-700"
             >
               First Name
             </label>
             <input
               type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
+              id="firstname"
+              name="firstname"
+              value={formData.firstname}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.firstName ? 'border-red-500' : 'border-gray-300'
+                errors.firstname ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="John"
               required
             />
-            {errors.firstName && (
-              <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+            {errors.firstname && (
+              <p className="mt-2 text-sm text-red-600">{errors.firstname}</p>
             )}
           </div>
           <div>
             <label
-              htmlFor="lastName"
+              htmlFor="lastname"
               className="block text-sm font-medium text-gray-700"
             >
               Last Name
             </label>
             <input
               type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
+              id="lastname"
+              name="lastname"
+              value={formData.lastname}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.lastName ? 'border-red-500' : 'border-gray-300'
+                errors.lastname ? 'border-red-500' : 'border-gray-300'
               } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
               placeholder="Doe"
               required
             />
-            {errors.lastName && (
-              <p className="mt-2 text-sm text-red-600">{errors.lastName}</p>
+            {errors.lastname && (
+              <p className="mt-2 text-sm text-red-600">{errors.lastname}</p>
             )}
           </div>
           <div>
