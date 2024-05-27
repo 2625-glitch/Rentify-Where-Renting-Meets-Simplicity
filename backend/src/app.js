@@ -33,7 +33,7 @@ app.use(compression());
 app.use(
   cors({
     credentials: true,
-    origin: '*',
+    origin: 'https://rentify-where-renting-meets-simplicity-nllf.vercel.app/',
   })
 );
 app.options('*', cors());
