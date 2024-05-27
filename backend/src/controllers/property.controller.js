@@ -49,11 +49,16 @@ const updateProperty = async (req, res) => {
 };
 
 const deleteProperty = async (req, res) => {
-  const property = await propertyService.deleteProperty(req.params.id);
-  if (!property) {
-    return res.status(httpStatus.NOT_FOUND).send({ message: 'Property not found' });
+  try {
+    const property = await propertyService.deleteProperty(req.params.id);
+    if (!property) {
+      return res.status(httpStatus.NOT_FOUND).send({ message: 'Property not found' });
+    }
+    res.status('Deleted Property').send();
+  } catch (error) {
+    console.error('Error deleting property:', error);
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Internal Server Error' });
   }
-  res.status(httpStatus.NO_CONTENT).send();
 };
 
 module.exports = {

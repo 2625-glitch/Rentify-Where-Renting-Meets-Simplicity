@@ -1,18 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import axios from 'axios';
-import { useUser } from '../../contexts/UserContext';
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-export const UploadProperty = ({ onClose }) => {
+
+export const EditProperty = ({ property, onClose, onEditSuccess }) => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [formData, setFormData] = useState({
-    location: '',
-    area: '',
-    bedrooms: '',
-    bathrooms: '',
-    amenities: '',
+    location: property.location,
+    area: property.area,
+    bedrooms: property.bedrooms,
+    bathrooms: property.bathrooms,
+    amenities: property.amenities.join(', '),
   });
   const [errors, setErrors] = useState({});
-  const { user } = useUser();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,20 +42,12 @@ export const UploadProperty = ({ onClose }) => {
     }
     setErrors({});
 
-    if (!user || !user.id) {
-      console.error('User is not logged in or user id is missing');
-      alert('User is not logged in or user id is missing');
-      return;
-    }
-
-    const API_ENDPOINT = `${backendUrl}/v1/property`;
-    console.log('user id while uploading property is', user.id);
+    const API_ENDPOINT = `${backendUrl}/v1/property/${property._id}`;
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         API_ENDPOINT,
         {
           ...formData,
-          userId: user.id,
         },
         {
           headers: {
@@ -65,28 +56,22 @@ export const UploadProperty = ({ onClose }) => {
         }
       );
 
-      if (response.status === 200 || response.status === 201) {
-        alert('Property uploaded successfully');
-        setFormData({
-          location: '',
-          area: '',
-          bedrooms: '',
-          bathrooms: '',
-          amenities: '',
-        });
+      if (response.status === 200 || response.status === 204) {
+        alert('Property updated successfully');
         onClose();
+        onEditSuccess();
       } else {
-        alert('Failed to upload property');
+        alert('Failed to update property');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred during property upload');
+      alert('An error occurred during property update');
     }
   };
 
   return (
     <div className="max-w-lg w-full mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Upload Property</h2>
+      <h2 className="text-2xl font-bold mb-6">Edit Property</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
@@ -190,11 +175,11 @@ export const UploadProperty = ({ onClose }) => {
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Upload Property
+          Edit Property
         </button>
       </form>
     </div>
   );
 };
 
-export default UploadProperty;
+export default EditProperty;
