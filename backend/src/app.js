@@ -28,15 +28,15 @@ app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
-app.get("/", (req, res) => {
-    res.json("Hello");
-})
+app.get('/', (req, res) => {
+  res.json('Hello');
+});
 
 // enable cors
 app.use(
   cors({
     credentials: true,
-    origin: 'https://rentify-where-renting-meets-simplicity-nllf.vercel.app/',
+    origin: '*',
   })
 );
 app.options('*', cors());
